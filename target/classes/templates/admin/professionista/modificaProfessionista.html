@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <title>Modifica User - Admin</title>
+    <link href="/css/responsive.css" rel="stylesheet" />
+    <script>
+        let servizioIdToDelete;
+
+        function confirmDelete(event, servizioId) {
+            event.preventDefault();
+            servizioIdToDelete = servizioId;
+            const modal = new bootstrap.Modal(document.getElementById('confirmModal'));
+            modal.show();
+        }
+
+        function deleteServizio() {
+            window.location.href = "/admin/servizio/delete/" + servizioIdToDelete;
+        }
+    </script>
+</head>
+<body>
+<header th:replace="fragments/layout.html :: navMenu"></header>
+
+<section class="generic_section layout_padding">
+    <div class="container mt-4">
+        <a href="#" th:href="@{/default}" class="admin-link">
+            <h2 class="text-center mb-4">Menu amministrazione</h2>
+        </a>
+        <hr class="black-line my-4">
+
+        <div class="container">
+            <div class="d-flex justify-content-center mt-5">
+                <div class="form-container rounded p-4 shadow">
+                    <div class="heading_container mb-4 text-center">
+                        <h3>Modifica Professionista</h3>
+                    </div>
+                    <form th:action="@{/admin/professionista/edit/{id}(id=${professionista.id})}" method="post" th:object="${professionista}">
+                        <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger" role="alert">
+                            <h4 align="center" th:each="err : ${#fields.globalErrors()}" th:text="'Errore: ' + ${err}">...</h4>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label for="nome">Nome</label>
+                            <input type="text" id="nome" class="form-control rounded-pill" placeholder="Nome" th:field="*{nome}">
+                            <div th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="alert alert-danger mt-2" role="alert"></div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label for="cognome">Cognome</label>
+                            <input type="text" id="cognome" class="form-control rounded-pill" placeholder="Cognome" th:field="*{cognome}">
+                            <div th:if="${#fields.hasErrors('cognome')}" th:errors="*{cognome}" class="alert alert-danger mt-2" role="alert"></div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label for="professione">Professione</label>
+                            <input type="text" id="professione" class="form-control rounded-pill" placeholder="Professione" th:field="*{professione}">
+                            <div th:if="${#fields.hasErrors('professione')}" th:errors="*{professione}" class="alert alert-danger mt-2" role="alert"></div>
+                        </div>
+                        <div class="btn_box text-center">
+                            <button type="submit" class="btn btn-purple">Modifica</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div> <!-- end container -->
+</section>
+
+<section class="generic_section layout_padding">
+    <div class="container mt-4">
+        <hr class="black-line my-4">
+        <div class="container">
+            <div class="d-flex justify-content-center mt-5">
+                <div class="form-container rounded p-4 shadow">
+                    <div class="heading_container mb-4 text-center">
+                        <h3>Modifica Immagine del Professionista</h3>
+                    </div>
+                    <form th:action="@{/admin/professionista/changeImg/} + ${professionista.id}" method="post" enctype="multipart/form-data">
+                        <div class="form-group mb-4">
+                            <input type="file" class="form-control-file" name="file" required>
+                        </div>
+                        <div class="preview-img mb-4">
+                            <h5><em>Immagine attuale:</em></h5>
+                            <img th:if="${professionista.img == 'profili'}" src="/images/profile/profile.webp" alt="Profile professionista">
+                            <img th:unless="${professionista.img == 'profili'}" th:src="'/images/professionisti/profili/' + ${professionista.img}" alt="Profile professionista">
+                        </div>
+                        <div class="btn_box text-center">
+                            <button type="submit" class="btn btn-purple">Cambia Immagine</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="generic_section layout_padding">
+    <div class="container mt-4">
+        <hr class="purple-line my-4">
+        <div class="container">
+            <div class="heading_container d-flex justify-content-between align-items-center mb-3">
+                <h3>Servizi Proposti dal Professionista</h3>
+            </div>
+            <div class="content-box">
+                <div class="d-flex justify-content-end">
+                    <a class="btn btn-lg mb-3" th:href="@{/admin/professionisti}">
+                        <i class="fas fa-plus"></i> ADD servizio
+                    </a>
+                </div>
+                <div class="table-container">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th scope="col" class="text-center">#</th>
+                                <th scope="col" class="text-center">Nome</th>
+                                <th scope="col" class="text-center">Prezzo</th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="servizio : ${servizi}">
+                                <th scope="row" class="text-center" th:text="${servizio.id}">1</th>
+                                <td class="text-center" th:text="${servizio.nome}">Nome</td>
+                                <td class="text-center" th:text="${servizio.prezzo}">Prezzo</td>
+                                <td>
+                                    <a class="btn btn-success" th:href="@{'/admin/servizio/edit/' + ${servizio.id}}" title="Modifica">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a class="btn btn-danger" href="#" th:onclick="'return confirmDelete(event, ' + ${servizio.id} + ')'" title="Elimina">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container mt-4">
+    <div class="food-section mb-4"></div>
+</div>
+
+<section class="generic_section layout_padding">
+    <div class="container mt-4">
+        <hr class="purple-line my-4">
+        <div class="container">
+            <div class="heading_container d-flex justify-content-between align-items-center mb-3">
+                <h3>Disponibilità Proposte dal Professionista</h3>
+            </div>
+            <div class="content-box">
+                <div class="d-flex justify-content-end">
+                    <a class="btn btn-lg mb-3" th:href="@{/admin/professionisti}">
+                        <i class="fas fa-plus"></i> ADD disponibilità
+                    </a>
+                </div>
+                <div class="table-container">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th scope="col" class="text-center">#</th>
+                                <th scope="col" class="text-center">Data</th>
+                                <th scope="col" class="text-center">Ora inizio</th>
+                                <th scope="col" class="text-center">Ora fine</th>
+                                <th scope="col"></th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="disponibilita : ${disponibilitaList}">
+                                <th scope="row" class="text-center" th:text="${disponibilita.id}">1</th>
+                                <td class="text-center" th:text="${disponibilita.data}">Data</td>
+                                <td class="text-center" th:text="${disponibilita.oraInizio}">OraInizio</td>
+                                <td class="text-center" th:text="${disponibilita.oraFine}">OraFine</td>
+
+                                <td>
+                                    <a class="btn btn-success" th:href="@{'/admin/disponibilita/edit/' + ${disponibilita.id}}" title="Modifica">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container mt-4">
+    <div class="food-section mb-4"></div>
+</div>
+
+<!-- Modal di conferma -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLabel">Conferma Eliminazione</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Sei sicuro di voler cancellare questo servizio?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <button type="button" class="btn btn-danger" onclick="deleteServizio()">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybBogGzFWEnr6b4pJO6df6k5C0rj7lz7ZBebxPBjq02x6d2/l" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-76IHCjiTcl0i2sO31WR/eB3wrRAn48mPoxrHbYO2evnePz55fnWZScGzgnI0jbG5" crossorigin="anonymous"></script>
+</body>
+</html>
