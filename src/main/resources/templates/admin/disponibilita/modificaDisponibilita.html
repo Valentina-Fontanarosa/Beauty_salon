@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <title>Modifica Disponibilita - Admin</title>
+    <link href="/css/responsive.css" rel="stylesheet" />
+</head>
+<body>
+<header th:replace="fragments/layout.html :: navMenu"></header>
+
+<section class="generic_section layout_padding">
+    <div class="container mt-4">
+        <a href="#" th:href="@{/default}" class="admin-link">
+            <h2 class="text-center mb-4">Menu amministrazione</h2>
+        </a>
+        <hr class="black-line my-4">
+
+        <div class="container">
+            <div class="d-flex justify-content-center mt-5">
+                <div class="form-container rounded p-4 shadow">
+                    <div class="heading_container mb-4 text-center">
+                        <h3>Modifica Disponibilità</h3>
+                    </div>
+                    <form th:action="@{/admin/disponibilita/edit/{id}(id=${disponibilita.id})}" method="post" th:object="${disponibilita}">
+                        <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger" role="alert">
+                            <h4 align="center" th:each="err : ${#fields.globalErrors()}" th:text="'Errore: ' + ${err}">...</h4>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label for="data">Data</label>
+                            <input type="data" id="data" class="form-control rounded-pill" placeholder="Data" th:field="*{data}">
+                            <div th:if="${#fields.hasErrors('data')}" th:errors="*{data}" class="alert alert-danger mt-2" role="alert"></div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label for="oraInizio">Ora Inizio</label>
+                            <input type="time" id="oraInizio" class="form-control rounded-pill" placeholder="OraInizio" th:field="*{oraInizio}">
+                            <div th:if="${#fields.hasErrors('oraInizio')}" th:errors="*{oraInizio}" class="alert alert-danger mt-2" role="alert"></div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label for="oraFine">Ora Fine</label>
+                            <input type="time" id="oraFine" class="form-control rounded-pill" placeholder="OraFine" th:field="*{oraFine}">
+                            <div th:if="${#fields.hasErrors('oraFine')}" th:errors="*{oraFine}" class="alert alert-danger mt-2" role="alert"></div>
+                        </div>
+                        <div class="btn_box text-center">
+                            <button type="submit" class="btn btn-purple">Modifica</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div> <!-- end container -->
+</section>
+
+<div class="container mt-4">
+    <div class="food-section mb-4"></div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybBogGzFWEnr6b4pJO6df6k5C0rj7lz7ZBebxPBjq02x6d2/l" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-76IHCjiTcl0i2sO31WR/eB3wrRAn48mPoxrHbYO2evnePz55fnWZScGzgnI0jbG5" crossorigin="anonymous"></script>
+</body>
+</html>

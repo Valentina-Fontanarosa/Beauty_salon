@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Beauty Salon</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="/css/responsive.css" rel="stylesheet" />
+</head>
+<body>
+<header th:replace="fragments/layout.html :: navMenu"></header>
+<div class="container mt-5">
+    <div class="background-container">
+        <div class="background-overlay"></div>
+        <div class="text-container text-start">
+            <h1>Trattamenti Parrucchiere</h1>
+            <p>Prenditi cura dei tuoi capelli e trova con noi il tuo stile unico!</p>
+            <p class="small-text">Se sei già registrato prenota un appuntamento</p>
+            <div sec:authorize="isAuthenticated()">
+                <div class="btn-group btn-group-toggle" role="group" aria-label="Basic outlined example">
+                    <a sec:authorize="hasAnyAuthority('GENERIC_USER', 'OIDC_USER')" th:href="@{/default}" class="btn btn-outline-primary me-2">
+                        Prenota
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <h2 class="text-center mt-4">I nostri Servizi</h2>
+    <hr class="my-4 black-line">
+    <div class="row">
+        <div class="col-md-4" th:each="servizio : ${servizi}">
+            <div class="card mb-4 card-custom"> <!-- Aggiunta della classe card-custom -->
+                <a th:href="@{'/servizio/' + ${servizio.id}}">
+                    <img th:src="@{'/images/servizio/profili/' + ${servizio.img}}" class="card-img-top" alt="Immagine Servizio">
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title font-weight-bold mb-4" th:text="${servizio.nome}">Nome Servizio</h5>
+                    <p class="card-text" th:text="'Prezzo: ' + ${servizio.prezzo} + '€'">Prezzo</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container mt-5">
+    <h2 class="text-center mt-4">Nuovi Professionisti del salone</h2>
+    <hr class="my-4 black-line">
+    <div class="row">
+        <div class="col-md-4" th:each="professionista : ${professionisti}">
+            <div class="card mb-4 card-custom"> <!-- Aggiunta della classe card-custom -->
+                <a th:href="@{'/professionista/' + ${professionista.id}}">
+
+                    <img th:if="${professionista.img == 'profili'}" src="/images/profile/profile.webp"  class="card-img-top" alt="Immagine Professionista">
+                    <img th:unless="${professionista.img == 'profili'}" th:src="'/images/professionisti/profili/' + ${professionista.img}" class="card-img-top" alt="Immagine Professionista">
+
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title font-weight-bold mb-4" th:text="${professionista.nome} + ' ' + ${professionista.cognome}">Nome Cognome</h5>
+                    <p class="card-text" th:text="${professionista.professione}">Professione</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-4">
+    <div class="beauty-section mb-4">
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+0c5a5d5L5s5bc8j5/gF5BR5O4l8p" crossorigin="anonymous"></script>
+</body>
+</html>
