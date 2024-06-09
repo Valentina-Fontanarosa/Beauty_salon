@@ -77,14 +77,19 @@ public class AuthenticationController {
             throw new IllegalStateException("Principal type not supported: " + principal.getClass().getName());
         }
 
-        model.addAttribute("id", credentials.getId());
+        if (credentials != null) {
+            model.addAttribute("id", credentials.getId());
 
-        if (credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
-            return "admin/dashboardAdmin";
-        } else if (credentials.getRole().equals(Credentials.GENERIC_USER_ROLE)) {
-            return "genericUser/dashboardGenericUser";
+            if (credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
+                return "admin/dashboardAdmin";
+            } else if (credentials.getRole().equals(Credentials.GENERIC_USER_ROLE)) {
+                return "genericUser/dashboardGenericUser";
+            }
+            return this.profileUser(model);
+        } else {
+            model.addAttribute("message", "Spiacenti, non sei registrato");
+            return "error";
         }
-        return this.profileUser(model);
     }
 
 
