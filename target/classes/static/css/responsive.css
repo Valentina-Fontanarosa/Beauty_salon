@@ -241,6 +241,7 @@ hr {
 .professionista-name {
     color: #000000; /* Colore nero per i nomi e i cognomi */
     transition: color 0.3s; /* Transizione per il cambio di colore */
+    text-decoration: none; /* Rimuove la sottolineatura */
 }
 
 .professionista-name:hover {
@@ -678,4 +679,19 @@ hr {
 }
 .servizi-link:active {
     color: #115800;
+}
+
+.professionista-name a {
+    color: #000000; /* Colore nero per i nomi e i cognomi */
+    transition: color 0.3s; /* Transizione per il cambio di colore */
+    text-decoration: none; /* Rimuove la sottolineatura */
+}
+
+.professionista-name a:hover {
+    color: #24AE4354; /* Colore al passaggio del mouse */
+}
+
+.reduced-img {
+    width: 50%; /* Mantiene la larghezza massima al 100% del contenitore */
+    height: auto; /* Mantiene le proporzioni */
 }

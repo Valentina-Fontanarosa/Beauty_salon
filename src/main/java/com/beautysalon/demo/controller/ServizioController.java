@@ -94,6 +94,7 @@ public class ServizioController {
     public String deleteServizio(@PathVariable("id") Long id, Model model) {
         Servizio servizio = this.servizioService.findById(id);
         Professionista professionista = this.professionistaService.findById(servizio.getProfessionista().getId());
+        FileStore.removeImg(DIR_FOLDER_IMG, servizio.getImg());
         professionista.getServizi().remove(servizio);
         this.servizioService.delete(servizio);
         this.professionistaService.save(professionista);

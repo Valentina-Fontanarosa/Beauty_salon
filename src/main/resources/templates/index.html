@@ -40,6 +40,9 @@
                 <div class="card-body">
                     <h5 class="card-title font-weight-bold mb-4" th:text="${servizio.nome}">Nome Servizio</h5>
                     <p class="card-text" th:text="'Prezzo: ' + ${servizio.prezzo} + '€'">Prezzo</p>
+                    <p class="card-text">Professionista:
+                        <a class="card-text professionista-name"th:href="@{'/professionista/' + ${servizio.professionista.id}}" th:text="${servizio.professionista.nome} + ' ' + ${servizio.professionista.cognome}"></a>
+                    </p>
                 </div>
             </div>
         </div>
